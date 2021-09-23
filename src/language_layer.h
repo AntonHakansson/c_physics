@@ -154,7 +154,7 @@ namespace {
 inline v2 operator+(v2 a, v2 b) { return Vector2Add(a, b); }
 inline v2 operator-(v2 a, v2 b) { return Vector2Subtract(a, b); }
 inline v2 operator*(v2 a, float b) { return Vector2Scale(a, b); }
-inline v2 operator*(v2 a, v2 b) { return Vector2MultiplyV(a, b); }
+inline v2 operator*(v2 a, v2 b) { return Vector2Multiply(a, b); }
 inline void operator+=(v2 &a, v2 b) { a = a + b; }
 inline void operator-=(v2 &a, v2 b) { a = a - b; }
 
@@ -249,12 +249,6 @@ Matrix2x2 operator*(const Matrix2x2 &a, const Matrix2x2 &b) {
   m.col2 = a * b.col2;
 
   return m;
-}
-
-// Remap input value within input range to output range
-f32 Remap(f32 value, f32 input_start, f32 input_end, f32 output_start, f32 output_end) {
-  return (value - input_start) / (input_end - input_start) * (output_end - output_start)
-         + output_start;
 }
 
 Vector2 Vector2Remap(v2 value, v2 input_start, v2 input_end, v2 output_start, v2 output_end) {

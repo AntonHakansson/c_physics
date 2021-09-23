@@ -555,7 +555,7 @@ namespace physics {
     for (u32 i = 0; i < world->bodies_count; i++) {
       Body *b = world->bodies + i;
 
-      // Matrix2x2 rot = Matrix2x2FromAngle(b->rotation);
+      Matrix2x2 rot = Matrix2x2FromAngle(b->rotation);
       v2 h = b->width * 0.5f;
 
       v2 p1 = rot * (v2){-h.x, -h.y};

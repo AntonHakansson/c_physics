@@ -1,13 +1,14 @@
 #!/bin/sh
 
 CompilerFlags="-O0 -g -fno-exceptions -fno-rtti -Wall -Wextra -Wmissing-field-initializers -DDEVELOPER"
+CC="g++"
 
 mkdir -p build
 
 pushd build > /dev/null
     echo "BUILDING GAME"
     echo "---------------------"
-    g++ $CompilerFlags ../src/main.cpp -o berserker -lraylib -lGL
+    "$CC" $CompilerFlags ../src/main.cpp -o c_physics -lraylib -lGL
     CompileSuccess=$?
 
     if [ $CompileSuccess -eq 0 ]; then
@@ -15,7 +16,7 @@ pushd build > /dev/null
            "run")
                echo "RUNNING GAME"
                echo "---------------------"
-               ./berserker
+               ./c_physics
                ;;
            "test")
                echo "NO TESTS"

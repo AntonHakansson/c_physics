@@ -26,7 +26,6 @@ global GameState* game;
 #include "language_layer.cpp"
 #include "memory.cpp"
 #include "renderer.cpp"
-//
 #include "physics.cpp"
 #include "player.cpp"
 
@@ -55,7 +54,7 @@ void setup_physics_demo_2() {
 
 int main(int argc, char** argv) {
   // Init Raylib
-  InitWindow(1024, 768, "BERSERKER");
+  InitWindow(1024, 768, "c_physics");
   Defer(CloseWindow(););
 
   SetTargetFPS(60);
@@ -103,14 +102,13 @@ int main(int argc, char** argv) {
       game->renderer.world_camera.target
           = Vector2Lerp(game->renderer.world_camera.target, camera_target, 10.0f * GetFrameTime());
 
-      game->renderer.world_camera.offset.x = -3.0f;
-      game->renderer.world_camera.offset.y = -2.0f;
+      game->renderer.world_camera.offset.x = -4.0f;
+      game->renderer.world_camera.offset.y = -2.5f;
 
-      if (IsKeyDown(KEY_LEFT_ALT)) {
-        game->renderer.world_camera.zoom += 0.2f * GetMouseWheelMove();
-        // // if (IsMouseButtonPressed(MOUSE_))
-        // Log("mouse scroll %d\n", GetMouseWheelMove());
+      if (IsKeyDown(KEY_R)) {
+        game->renderer.world_camera.zoom = 1.0f;
       }
+      game->renderer.world_camera.zoom += 0.18f * GetMouseWheelMove();
     }
 
     PlayerUpdate(&game->player);
@@ -130,14 +128,18 @@ int main(int argc, char** argv) {
         physics::DebugDraw(&game->world);
 #endif
 
-        PushText(&game->renderer, "HELLO BIATCH", game->player.body->position, 1.0f, BLACK);
+        // PushText(&game->renderer, "HELLO BIATCH", game->player.body->position, 1.0f, BLACK);
       }
       RenderEnd(&game->renderer);
 
       // Render UI
       //-----------------------------------------------
       SetMatrixProjection(MatrixOrtho(0.0f, GetScreenWidth(), GetScreenHeight(), 0.0f, 0.0f, 1.0f));
-      DrawFPS(10, 10);
+      DrawText("Controls:", 20, 20, 10, BLACK);
+      DrawText("- WASD to move", 40, 40, 10, DARKGRAY);
+      DrawText("- Space to jump", 40, 60, 10, DARKGRAY);
+      DrawText("- Left click to spawn rigidbodies", 40, 80, 10, DARKGRAY);
+      DrawText("- Mouse Wheel to Zoom in-out, R to reset zoom", 40, 100, 10, DARKGRAY);
     }
     EndDrawing();
   }
