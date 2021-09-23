@@ -50,11 +50,18 @@ void PlayerUpdate(Player *p) {
 
 void PlayerDraw(Player *p) {
   v2 h = p->body->width * 0.5f;
-  PushRect(&game->renderer, p->body->position, p->body->width, BLUE);
+  PushRect(&game->renderer, p->body->position, p->body->width, DARKBLUE);
 
+  f32 facing_direction = Sign(p->body->velocity.x);
+
+  f32 eye_radius = 0.2f;
   v2 eye = p->body->position;
-  eye.y += h.y * 0.75;
-  eye.x += h.x * 0.75 * (Sign(p->body->velocity.x));
+  eye.y += h.y * 0.70;
+  eye.x += h.x * 0.55 * facing_direction;
+  PushCircle(&game->renderer, eye, eye_radius, WHITE);
 
-  PushCircle(&game->renderer, eye, 0.05f, RED);
+  v2 pupil = eye;
+  pupil.x += facing_direction * 0.1;
+  pupil.y += -p->body->velocity.y*0.01;
+  PushCircle(&game->renderer, pupil, eye_radius*0.35, BLACK);
 }

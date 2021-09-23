@@ -1,14 +1,14 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-CompilerFlags="-O0 -g -fno-exceptions -fno-rtti -Wall -Wextra -Wmissing-field-initializers -DDEVELOPER"
-CC="g++"
+CompilerFlags="${CompilerFlags:- -O0 -g -fno-exceptions -fno-rtti -Wall -Wextra -Wmissing-field-initializers -DDEVELOPER}"
+CC="${CC:-g++}"
 
 mkdir -p build
 
 pushd build > /dev/null
     echo "BUILDING GAME"
     echo "---------------------"
-    "$CC" $CompilerFlags ../src/main.cpp -o c_physics -lraylib -lGL
+    "$CC" $CompilerFlags ../src/main.cpp -o c_physics -lm -lGL -lraylib
     CompileSuccess=$?
 
     if [ $CompileSuccess -eq 0 ]; then

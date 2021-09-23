@@ -551,7 +551,7 @@ namespace physics {
     }
   }
 
-  void DebugDraw(World *world) {
+  void Draw(World *world) {
     for (u32 i = 0; i < world->bodies_count; i++) {
       Body *b = world->bodies + i;
 

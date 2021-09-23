@@ -7,7 +7,7 @@
   };
 
   outputs = { self, nixpkgs, utils, }:
-    utils.lib.eachSystem [ "x86_64-linux" ] (system:
+    utils.lib.eachDefaultSystem (system:
       let pkgs = import nixpkgs { inherit system; };
       in rec {
         packages = {
@@ -16,11 +16,13 @@
             nativeBuildInputs = with pkgs; [ autoPatchelfHook ];
             buildInputs = with pkgs; [ raylib libGL ];
             src = ./.;
-            dontPatch = true;
-            dontConfigure = true;
-            dontInstall = true;
             buildPhase = ''
-              ./build.sh
+              export CompilerFlags="-O3 -fno-exceptions -fno-rtti"
+              bash ./build.sh
+            '';
+            installPhase = ''
+              mkdir -p $out/bin
+              cp build/c_physics $out/bin/c_physics
             '';
           };
         };

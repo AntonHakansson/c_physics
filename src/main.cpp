@@ -29,24 +29,14 @@ global GameState* game;
 #include "physics.cpp"
 #include "player.cpp"
 
-void setup_physics_box2d_debug() {
-  physics::AddBody(&game->world, {4.662292f, 2.879695f}, {2.0f, 2.0f}, 10.0f)->rotation = 5.831474f;
-  physics::AddBody(&game->world, {6.460000f, 4.460000f}, {4.0f, 1.5f}, 10.0f)->rotation = 0.261799f;
-}
-
-void setup_physics_demo_1() {
+void setup_physics_demo() {
   v2 mid = {GetScreenWidth() * PIXEL_2_METER * 0.5f, GetScreenHeight() * PIXEL_2_METER * 0.5f};
   physics::AddBody(&game->world, {mid.x, 0.0f}, {mid.x * 4.0f, 3.0f}, F32_Max);
-}
-
-void setup_physics_demo_2() {
-  v2 mid = {GetScreenWidth() * PIXEL_2_METER * 0.5f, GetScreenHeight() * PIXEL_2_METER * 0.5f};
-  physics::AddBody(&game->world, {mid.x, 0.0f}, {mid.x * 4.0f, 3.0f}, F32_Max);
-  physics::AddBody(&game->world, {2.30000f, 6.50000f}, {4.000000f, 0.250000f}, F32_Max)->rotation
+  physics::AddBody(&game->world, {0.f, 6.f}, {4.000000f, 0.250000f}, F32_Max)->rotation
       = -0.261799f;
 
   physics::AddBody(&game->world, {1.610000f, 2.620000f}, {4.000000f, 0.250000f}, F32_Max)->rotation
-      = PI / 2.0f - PI / 24.0f;
+      = PI / 8.f;
 
   physics::AddBody(&game->world, {6.460000f, 4.460000f}, {4.000000f, 0.250000f}, F32_Max)->rotation
       = 0.261799f;
@@ -75,8 +65,7 @@ int main(int argc, char** argv) {
   game->player = PlayerInit(&game->world);
 
   // ground
-  setup_physics_demo_2();
-  // setup_physics_box2d_debug();
+  setup_physics_demo();
 
   while (!WindowShouldClose()) {
     // Update Game state
@@ -89,7 +78,7 @@ int main(int argc, char** argv) {
     if (IsMouseButtonPressed(0)) {
       physics::Body* b = physics::AddBody(
           &game->world, game->world_cursor_position,
-          {2.5f * (GetRandomValue(1, 100) / 100.0f), 1.5f * (GetRandomValue(10, 100) / 100.0f)},
+          {2.0f * (GetRandomValue(1, 100) / 100.0f), 1.0f * (GetRandomValue(10, 100) / 100.0f)},
           25.0f);
       b->rotation = (GetRandomValue(0, 100) / 100.0f) * 2.0f * PI;
     }
@@ -103,7 +92,7 @@ int main(int argc, char** argv) {
           = Vector2Lerp(game->renderer.world_camera.target, camera_target, 10.0f * GetFrameTime());
 
       game->renderer.world_camera.offset.x = -4.0f;
-      game->renderer.world_camera.offset.y = -2.5f;
+      game->renderer.world_camera.offset.y = -3.3f;
 
       if (IsKeyDown(KEY_R)) {
         game->renderer.world_camera.zoom = 1.0f;
@@ -124,11 +113,7 @@ int main(int argc, char** argv) {
       {
         PlayerDraw(&game->player);
 
-#if DEVELOPER
-        physics::DebugDraw(&game->world);
-#endif
-
-        // PushText(&game->renderer, "HELLO BIATCH", game->player.body->position, 1.0f, BLACK);
+        physics::Draw(&game->world);
       }
       RenderEnd(&game->renderer);
 
